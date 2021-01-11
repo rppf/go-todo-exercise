@@ -16,6 +16,7 @@ func setupRoutes(app *fiber.App) {
 	app.Get("/api/v1/todo/:id", todo.GetTodo)
 	app.Post("/api/v1/todo", todo.NewTodo)
 	app.Delete("/api/v1/todo/:id", todo.DeleteTodo)
+	app.Put("/api/v1/todo/:id", todo.UpdateTodo)
 }
 
 func initDatabase() {

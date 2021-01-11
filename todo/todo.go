@@ -52,3 +52,29 @@ func DeleteTodo(c *fiber.Ctx) error {
 	db.Delete(&deleteTodo)
 	return c.Send([]byte("Book Deleted"))
 }
+
+func UpdateTodo(c *fiber.Ctx) error {
+	id := c.Params("id")
+	db := database.DB
+	var err error
+	var todo Todo
+	var updateTodo Todo
+
+	if (id == "") || err != nil {
+		return c.Status(400).Send([]byte("No book found"))
+	}
+
+	if err := c.BodyParser(&updateTodo); err != nil {
+		return c.Status(500).Send([]byte(err.Error()))
+	}
+
+	db.Find(&todo, id)
+
+	if todo.Title == "" {
+		return c.Status(500).Send([]byte("No book found"))
+	}
+
+	db.Model(&todo).Save(&updateTodo)
+	return c.JSON(updateTodo)
+
+}
